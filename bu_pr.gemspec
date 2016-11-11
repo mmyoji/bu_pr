@@ -9,9 +9,8 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Masaya Myojin"]
   spec.email         = ["m.myojin0425@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
-  spec.homepage      = "TODO: Put your gem's website or public repo URL here."
+  spec.summary       = %q{Simple bundle update p-r creator}
+  spec.description   = %q{BuPr is simple pull request creator for the daily bundle update.}
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
