@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 require "bu_pr/version"
 require "bu_pr/configuration"
+require "bu_pr/git"
 
 require "logger"
 
@@ -25,26 +26,18 @@ module BuPr
       c.repo_name    = "mmyoji/bu_pr"
     end
 
-    # check git installed
-    unless system("git --help > /dev/null 2>&1")
+    git = Git.new
+
+    unless git.installed?
       raise "Git is not installed"
     end
 
-    current_branch = `git branch`.each_line do |line|
-      matched = line.strip.match(/\*\s+(?<current_branch>.+)/)
-      next unless matched
-
-      break matched["current_branch"]
-    end
-
-    if system("bundle update") && !`git status`.include?("Gemfile.lock")
+    if system("bundle update") && !git.diff?
       puts "no update"
       exit
     end
 
-    `git add Gemfile.lock` &&
-      `git commit -m "bundle update"` &&
-      `git push origin #{current_branch}`
+    git.push
 
     # bu_pr-dev
     oc = Octokit::Client.new access_token: config.access_token
@@ -52,7 +45,7 @@ module BuPr
     # oc.user.login
     repo_name = config.repo_name
 
-    res = oc.create_pull_request(repo_name, config.base_branch, current_branch, config.pr_title)
+    res = oc.create_pull_request(repo_name, config.base_branch, git.current_branch, config.pr_title)
     pr_number = res[:number]
 
     ENV['OCTOKIT_ACCESS_TOKEN'] = config.access_token
