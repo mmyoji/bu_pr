@@ -6,10 +6,8 @@ Run `bundle update` and create its pull-request.
 ## Installation
 
 ```rb
-gem 'bu_pr', github: 'mmyoji/bu_pr', group: :development
+gem 'bu_pr', group: :development
 ```
-
-TODO: register rubygems
 
 And then execute:
 
