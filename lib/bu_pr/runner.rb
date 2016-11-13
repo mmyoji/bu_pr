@@ -3,9 +3,7 @@
 module BuPr
   class Runner
     class << self
-      def configure
-        @config = yield Configuration.instance
-      end
+      attr_writer :config
 
       def config
         @config ||= Configuration.instance
