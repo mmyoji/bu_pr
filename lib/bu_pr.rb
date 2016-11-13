@@ -9,7 +9,10 @@ require "bu_pr/runner"
 
 module BuPr
   def configure
-    Runner.configure
+    conf = Configuration.instance
+    yield conf
+
+    Runner.config = conf
   end
   module_function :configure
 end
