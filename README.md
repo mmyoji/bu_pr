@@ -25,8 +25,11 @@ require 'bu_pr'
 
 # Setup
 BuPr.configure do |config|
-  config.repo_name    = "mmyoji/bu_pr"
-  config.access_token = "xxx"
+  config.access_token = "xxx"              # Required: or check ENV["BUPR_TOKEN"]
+  config.repo_name    = "mmyoji/bu_pr"     # Required: or check ENV["BUPR_REPO"]
+
+  config.base_branch  = "develop"          # Optional: default is 'master'
+  config.pr_title     = "My bundle update" # Optional: default is like 'Bundle update 2016-11-13'
 end
 
 BuPr::Runner.call
