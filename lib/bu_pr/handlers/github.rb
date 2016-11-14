@@ -7,6 +7,7 @@ module BuPr
   module Handlers
     class Github
       attr_reader :base, :current_branch, :repo, :title, :token
+      attr_reader :linker
 
       def initialize(attrs = {})
         config          = attrs[:config]
@@ -20,6 +21,22 @@ module BuPr
       end
 
       def call
+        number = create_pull_request
+        diff_comment(number)
+      end
+
+      def create_pull_request
+        res = client.create_pull_request \
+           repo,
+           base,
+           current_branch,
+           title
+
+        res[:number]
+      end
+
+      def diff_comment(pr_number)
+        load_linker(pr_number)
         linker.add_comment repo, pr_number, comment_content
       end
 
@@ -35,29 +52,12 @@ module BuPr
         "#{linker.make_compare_links.to_a.join("\n")}"
       end
 
-      def linker
-        @linker ||=
-          begin
-            ENV['OCTOKIT_ACCESS_TOKEN'] = token
+      def load_linker(pr_number)
+        ENV['OCTOKIT_ACCESS_TOKEN'] = token
 
-            l           = ::CompareLinker.new repo, pr_number
-            l.formatter = ::CompareLinker::Formatter::Markdown.new
-
-            l
-          end
-      end
-
-      def pr_number
-        @pr_number ||=
-          begin
-            res = client.create_pull_request \
-              repo,
-              base,
-              current_branch,
-              title
-
-            res[:number]
-          end
+        @linker           = ::CompareLinker.new repo, pr_number
+        @linker.formatter = ::CompareLinker::Formatter::Markdown.new
+        @linker
       end
     end
   end
