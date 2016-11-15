@@ -35,7 +35,21 @@ end
 BuPr::Runner.call
 ```
 
-TODO: add rake task
+or if you're using Rails,
+
+```rb
+# config/initializers/bu_pr.rb
+BuPr.configure do |config|
+  config.access_token = "xxx"
+  config.repo_name    = "mmyoji/bu_pr"
+end
+```
+
+then run the following command
+
+```sh
+$ bin/rake bu_pr:all
+```
 
 
 ## Contributing
