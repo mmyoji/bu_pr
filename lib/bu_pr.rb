@@ -7,6 +7,8 @@ require "bu_pr/handlers/github"
 
 require "bu_pr/runner"
 
+require "bu_pr/railtie"
+
 module BuPr
   def configure
     conf = Configuration.instance
