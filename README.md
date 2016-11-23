@@ -1,5 +1,7 @@
 # BuPr
 
+[![Build Status](https://travis-ci.org/mmyoji/bu_pr.svg?branch=master)](https://travis-ci.org/mmyoji/bu_pr)
+
 Run `bundle update` and create its pull-request.
 
 
