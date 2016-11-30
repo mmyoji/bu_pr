@@ -22,6 +22,8 @@ Or install it yourself as:
 
 ## Usage
 
+Get Github access token from [this page](https://github.com/settings/tokens/new) with `repo` scope.
+
 ```rb
 require 'bu_pr'
 
