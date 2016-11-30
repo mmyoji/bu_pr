@@ -18,7 +18,6 @@ describe BuPr::Runner do
   describe "#call" do
     before do
       allow(runner).to receive(:config) { config_double }
-      allow(runner.git).to receive(:installed?) { true }
 
       expect(runner).to receive(:bundle_update) { true }
     end
@@ -51,6 +50,33 @@ describe BuPr::Runner do
         expect(handler_double).to receive(:call)
 
         runner.call
+      end
+    end
+  end
+
+  describe '#bundle_update' do
+    before do
+      allow(runner).to receive(:config) { config_double }
+      allow(runner).to receive(:valid?) { validity }
+    end
+
+    subject { runner.bundle_update }
+
+    context "w/ invalid data" do
+      let(:validity) { false }
+
+      it do
+        expect(runner).to_not receive(:_bundle_update)
+        is_expected.to eq false
+      end
+    end
+
+    context "w/ valid data" do
+      let(:validity) { true }
+
+      it do
+        expect(runner).to receive(:_bundle_update) { true }
+        is_expected.to eq true
       end
     end
   end
