@@ -27,22 +27,44 @@ describe BuPr::Handlers::Github do
     end
   end
 
-  describe "#call" do
-    let(:client_double) { double("client") }
-    let(:linker_double) { double("linker") }
-    let(:pr_number)     { 111 }
+  let(:client_double) { double("client") }
+  let(:linker_double) { double("linker") }
+  let(:pr_number)     { 111 }
 
+  describe "#call" do
     specify do
+      expect(handler).to \
+        receive(:create_pull_request)
+        .and_return(pr_number)
+
+      expect(handler).to \
+        receive(:diff_comment)
+        .with(pr_number)
+
+      handler.call
+    end
+  end
+
+  describe '#create_pull_request' do
+    it 'returns pull-request number' do
       h = handler
+
+      expect(Octokit::Client).to \
+        receive(:new).with(access_token: h.token)
+        .and_return(client_double)
 
       expect(client_double).to \
         receive(:create_pull_request)
         .with(h.repo, h.base, "bundle-update", h.title)
         .and_return(number: pr_number)
 
-      expect(Octokit::Client).to \
-        receive(:new).with(access_token: h.token)
-        .and_return(client_double)
+      expect(h.create_pull_request).to eq pr_number
+    end
+  end
+
+  describe '#diff_comment' do
+    it 'adds a comment' do
+      h = handler
 
       expect(linker_double).to receive(:formatter=)
 
@@ -59,7 +81,7 @@ describe BuPr::Handlers::Github do
         .with(h.repo, pr_number)
         .and_return(linker_double)
 
-      handler.call
+      h.diff_comment(pr_number)
     end
   end
 end
