@@ -21,7 +21,7 @@ module BuPr
     end
 
     def call
-      if valid? && bundle_update && !git.diff?
+      if bundle_update && !git.diff?
         puts "no update"
         exit
       end
@@ -30,6 +30,10 @@ module BuPr
 
       handler = Handlers::Github.new config: config, current_branch: git.current_branch
       handler.call
+    end
+
+    def bundle_update
+      valid? && _bundle_update
     end
 
     def config
@@ -50,7 +54,7 @@ module BuPr
 
     private
 
-    def bundle_update
+    def _bundle_update
       return true if system("bundle update")
 
       raise "Error(s) happened"
