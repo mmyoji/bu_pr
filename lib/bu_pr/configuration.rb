@@ -19,8 +19,8 @@ module BuPr
     alias base_branch= branch=
 
     def initialize
-      @branch   = "master"
-      @pr_title = "Bundle update #{Time.now.strftime('%F')}"
+      @branch   = ENV.fetch("BUPR_BRANCH") { "master" }
+      @pr_title = ENV.fetch("BUPR_TITLE")  { "Bundle update #{Time.now.strftime('%F')}" }
 
       @access_token = ENV["BUPR_TOKEN"]
       @repo_name    = ENV["BUPR_REPO"]
