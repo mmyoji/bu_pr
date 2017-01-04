@@ -6,7 +6,11 @@ require "compare_linker"
 module BuPr
   module Handlers
     class Github
-      attr_reader :base, :current_branch, :repo, :title, :token
+      attr_reader :base
+      attr_reader :current_branch
+      attr_reader :repo
+      attr_reader :title
+      attr_reader :token
       attr_reader :linker
 
       def initialize(attrs = {})
@@ -27,10 +31,10 @@ module BuPr
 
       def create_pull_request
         res = client.create_pull_request \
-           repo,
-           base,
-           current_branch,
-           title
+          repo,
+          base,
+          current_branch,
+          title
 
         res[:number]
       end
