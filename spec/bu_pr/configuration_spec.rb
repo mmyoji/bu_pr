@@ -12,6 +12,10 @@ describe BuPr::Configuration do
       is_expected.to respond_to(:access_token)
       is_expected.to respond_to(:access_token=)
 
+      is_expected.to respond_to(:branch)
+      is_expected.to respond_to(:branch=)
+
+      # DEPRECATED
       is_expected.to respond_to(:base_branch)
       is_expected.to respond_to(:base_branch=)
 

@@ -18,7 +18,7 @@ module BuPr
 
         @current_branch = attrs[:current_branch]
 
-        @base  = config.base_branch
+        @base  = config.branch
         @repo  = config.repo_name
         @title = config.pr_title
         @token = config.access_token
