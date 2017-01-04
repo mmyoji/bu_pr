@@ -24,25 +24,41 @@ Or install it yourself as:
 
 Get Github access token from [this page](https://github.com/settings/tokens/new) with `repo` scope.
 
+
+### Set configuration values as Environment variables.
+
+```sh
+# .bash_profile / .profile / .zshrc / etc.
+
+export BUPR_TOKEN="xxx"
+export BUPR_REPO="mmyoji/bu_pr"
+# export BUPR_BRANCH="develop"
+# export BUPR_TITLE="My bundle update"
+```
+
+
+### Set configuration values in config file.
+
 ```rb
 require 'bu_pr'
 
 # Setup
 BuPr.configure do |config|
-  config.access_token = "xxx"          # Required: or check ENV["BUPR_TOKEN"]
-  config.repo_name    = "mmyoji/bu_pr" # Required: or check ENV["BUPR_REPO"]
+  config.access_token = "xxx"          # Required
+  config.repo_name    = "mmyoji/bu_pr" # Required
 
-  config.branch   = "develop"          # Optional: ENV["BUPR_BRANCH"] (default is 'master')
-  config.pr_title = "My bundle update" # Optional: ENV["BUPR_TITLE"]  (default is like 'Bundle update 2016-11-13')
+  config.branch   = "develop"          # Optional :: default is 'master'
+  config.pr_title = "My bundle update" # Optional :: default is like 'Bundle update 2016-11-13'
 end
 
 BuPr::Runner.call
 ```
 
-or if you're using Rails,
+### Rails
 
 ```rb
 # config/initializers/bu_pr.rb
+
 BuPr.configure do |config|
   config.access_token = "xxx"
   config.repo_name    = "mmyoji/bu_pr"
