@@ -6,7 +6,7 @@ describe BuPr::Handlers::Github do
   let(:config) {
     double \
       "config",
-      base_branch: "master",
+      branch: "master",
       repo_name: "mmyoji/bu_pr",
       pr_title: "bundle update",
       access_token: "dummy-token"
@@ -20,7 +20,7 @@ describe BuPr::Handlers::Github do
     specify do
       expect(handler.current_branch).to eq "bundle-update"
 
-      expect(handler.base).to  eq config.base_branch
+      expect(handler.base).to  eq config.branch
       expect(handler.repo).to  eq config.repo_name
       expect(handler.title).to eq config.pr_title
       expect(handler.token).to eq config.access_token
