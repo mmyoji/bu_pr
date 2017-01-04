@@ -7,7 +7,7 @@ require "bu_pr/handlers/github"
 
 require "bu_pr/runner"
 
-require "bu_pr/railtie"
+require "bu_pr/railtie" if defined?(Rails::Railtie)
 
 module BuPr
   def configure
