@@ -13,7 +13,7 @@ module BuPr
       attr_reader :token
       attr_reader :linker
 
-      def initialize(attrs = {})
+      def initialize attrs = {}
         config          = attrs[:config]
 
         @current_branch = attrs[:current_branch]
@@ -39,7 +39,7 @@ module BuPr
         res[:number]
       end
 
-      def diff_comment(pr_number)
+      def diff_comment pr_number
         load_linker(pr_number)
         linker.add_comment repo, pr_number, comment_content
       end
@@ -56,7 +56,7 @@ module BuPr
         "#{linker.make_compare_links.to_a.join("\n")}"
       end
 
-      def load_linker(pr_number)
+      def load_linker pr_number
         ENV['OCTOKIT_ACCESS_TOKEN'] = token
 
         @linker           = ::CompareLinker.new repo, pr_number
