@@ -6,8 +6,10 @@ module BuPr
     include Singleton
 
     ACCESSORS = %i(
-      access_token base_branch
-      pr_title repo_name
+      access_token
+      base_branch
+      pr_title
+      repo_name
     )
 
     attr_accessor(*ACCESSORS)
