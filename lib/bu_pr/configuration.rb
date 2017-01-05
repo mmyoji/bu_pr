@@ -8,7 +8,7 @@ module BuPr
     ACCESSORS = %i(
       access_token
       branch
-      pr_title
+      title
       repo_name
     )
 
@@ -17,10 +17,12 @@ module BuPr
     # DEPRECATED
     alias base_branch branch
     alias base_branch= branch=
+    alias pr_title title
+    alias pr_title= title=
 
     def initialize
-      @branch   = ENV.fetch("BUPR_BRANCH") { "master" }
-      @pr_title = ENV.fetch("BUPR_TITLE")  { "Bundle update #{Time.now.strftime('%F')}" }
+      @branch = ENV.fetch("BUPR_BRANCH") { "master" }
+      @title  = ENV.fetch("BUPR_TITLE")  { "Bundle update #{Time.now.strftime('%F')}" }
 
       @access_token = ENV["BUPR_TOKEN"]
       @repo_name    = ENV["BUPR_REPO"]

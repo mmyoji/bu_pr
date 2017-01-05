@@ -8,7 +8,7 @@ describe BuPr::Handlers::Github do
       "config",
       branch: "master",
       repo_name: "mmyoji/bu_pr",
-      pr_title: "bundle update",
+      title: "bundle update",
       access_token: "dummy-token"
   }
 
@@ -22,7 +22,7 @@ describe BuPr::Handlers::Github do
 
       expect(handler.base).to  eq config.branch
       expect(handler.repo).to  eq config.repo_name
-      expect(handler.title).to eq config.pr_title
+      expect(handler.title).to eq config.title
       expect(handler.token).to eq config.access_token
     end
   end
