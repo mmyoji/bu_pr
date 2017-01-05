@@ -21,7 +21,7 @@ module BuPr
         @base  = config.branch
         @repo  = config.repo
         @title = config.title
-        @token = config.access_token
+        @token = config.token
       end
 
       def call
