@@ -6,7 +6,7 @@ module BuPr
     include Singleton
 
     ACCESSORS = %i(
-      access_token
+      token
       branch
       title
       repo
@@ -15,6 +15,8 @@ module BuPr
     attr_accessor(*ACCESSORS)
 
     # DEPRECATED
+    alias access_token token
+    alias access_token= token=
     alias base_branch branch
     alias base_branch= branch=
     alias pr_title title
@@ -26,8 +28,8 @@ module BuPr
       @branch = ENV.fetch("BUPR_BRANCH") { "master" }
       @title  = ENV.fetch("BUPR_TITLE")  { "Bundle update #{Time.now.strftime('%F')}" }
 
-      @access_token = ENV["BUPR_TOKEN"]
-      @repo         = ENV["BUPR_REPO"]
+      @token  = ENV["BUPR_TOKEN"]
+      @repo   = ENV["BUPR_REPO"]
     end
 
     def valid?

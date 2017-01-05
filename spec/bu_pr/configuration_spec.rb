@@ -9,6 +9,10 @@ describe BuPr::Configuration do
     subject { config }
 
     it "responds to accessors" do
+      is_expected.to respond_to(:token)
+      is_expected.to respond_to(:token=)
+
+      # DEPRECATED
       is_expected.to respond_to(:access_token)
       is_expected.to respond_to(:access_token=)
 
@@ -39,17 +43,17 @@ describe BuPr::Configuration do
     subject { config.valid? }
 
     before do
-      config.access_token = "dummy"
-      config.repo         = "mmyoji/bu_pr"
+      config.token = "dummy"
+      config.repo  = "mmyoji/bu_pr"
     end
 
     context "w/ valid attrs" do
       it { is_expected.to eq true }
     end
 
-    context "w/o access_token" do
+    context "w/o token" do
       before do
-        config.access_token = ""
+        config.token = ""
       end
 
       it { is_expected.to eq false }

@@ -9,13 +9,13 @@ describe BuPr do
     specify do
       described_class.configure do |c|
         c.repo         = "mmyoji/bu_pr-test"
-        c.access_token = "xxx"
+        c.token = "xxx"
       end
 
       conf = described_class::Runner.config
 
       expect(conf.repo).to eq "mmyoji/bu_pr-test"
-      expect(conf.access_token).to eq "xxx"
+      expect(conf.token).to eq "xxx"
     end
   end
 end
