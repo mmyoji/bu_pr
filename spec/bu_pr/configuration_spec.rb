@@ -19,6 +19,10 @@ describe BuPr::Configuration do
       is_expected.to respond_to(:base_branch)
       is_expected.to respond_to(:base_branch=)
 
+      is_expected.to respond_to(:title)
+      is_expected.to respond_to(:title=)
+
+      # DEPRECATED
       is_expected.to respond_to(:pr_title)
       is_expected.to respond_to(:pr_title=)
 
