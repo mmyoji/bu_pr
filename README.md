@@ -44,11 +44,11 @@ require 'bu_pr'
 
 # Setup
 BuPr.configure do |config|
-  config.access_token = "xxx"          # Required
-  config.repo_name    = "mmyoji/bu_pr" # Required
+  config.token  = "xxx"              # Required
+  config.repo   = "mmyoji/bu_pr"     # Required
 
-  config.branch   = "develop"          # Optional :: default is 'master'
-  config.pr_title = "My bundle update" # Optional :: default is like 'Bundle update 2016-11-13'
+  config.branch = "develop"          # Optional :: default is 'master'
+  config.title  = "My bundle update" # Optional :: default is like 'Bundle update 2016-11-13'
 end
 
 BuPr::Runner.call
@@ -60,8 +60,8 @@ BuPr::Runner.call
 # config/initializers/bu_pr.rb
 
 BuPr.configure do |config|
-  config.access_token = "xxx"
-  config.repo_name    = "mmyoji/bu_pr"
+  config.token = "xxx"
+  config.repo  = "mmyoji/bu_pr"
 end
 ```
 
