@@ -5,14 +5,12 @@ module BuPr
   class Configuration
     include Singleton
 
-    ACCESSORS = %i(
-      token
-      branch
-      title
-      repo
+    attr_accessor(
+      :branch,
+      :title,
+      :token,
+      :repo,
     )
-
-    attr_accessor(*ACCESSORS)
 
     # DEPRECATED
     alias access_token token
@@ -33,11 +31,25 @@ module BuPr
     end
 
     def valid?
-      ACCESSORS.all? do |accr|
-        val = public_send(accr)
+      token? && branch? && title? && repo?
+    end
 
-        val && val != ""
-      end
+    private
+
+    def token?
+      token && token != ""
+    end
+
+    def branch?
+      branch && branch != ""
+    end
+
+    def title?
+      title && title != ""
+    end
+
+    def repo?
+      repo && repo != ""
     end
   end
 end
