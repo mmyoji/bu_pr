@@ -3,27 +3,23 @@
 module BuPr
   class Runner
     class << self
-      attr_writer :config
-
-      def config
-        @config ||= Configuration.instance
-      end
-
-      def call
-        new.call
+      def call opts = {}
+        new(opts).call
       end
     end
 
     attr_reader :git
+    attr_reader :config
 
-    def initialize
-      @git = Git.new
+    def initialize opts = {}
+      @git    = Git.new
+      @config = Configuration.new(opts)
     end
 
     def call
       if bundle_update && !git.diff?
         puts "no update"
-        exit
+        return
       end
 
       git.push
@@ -34,10 +30,6 @@ module BuPr
 
     def bundle_update
       valid? && _bundle_update
-    end
-
-    def config
-      self.class.config
     end
 
     def valid?
