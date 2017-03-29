@@ -65,23 +65,7 @@ BuPr.configure do |config|
 end
 ```
 
-then run the following commands
-
-```sh
-# Run all tasks
-$ bin/rake bu_pr:all
-
-# If you want to execute each task,
-
-# Run `bundle update` only
-$ bin/rake bu_pr:bu
-
-# Create pull-request
-$ bin/rake bu_pr:pr
-
-# Add gem diff comment
-$ bin/rake bu_pr:diff
-```
+then run the command `rake bu_pr`
 
 
 ## Contributing
