@@ -22,51 +22,33 @@ Or install it yourself as:
 
 ## Usage
 
-Get Github access token from [this page](https://github.com/settings/tokens/new) with `repo` scope.
+Get GitHub access token from [this page](https://github.com/settings/tokens/new) with `repo` scope.
 
+then run
 
-### Set configuration values as Environment variables.
+```sh
+$ bundle exec bu_pr --repo=mmyoji/bu_pr --token=<the token you got above>
+```
+
+or you can just set `repo` and `token` values in your `$HOME/.profile` file.
 
 ```sh
 # .bash_profile / .profile / .zshrc / etc.
 
 export BUPR_TOKEN="xxx"
 export BUPR_REPO="mmyoji/bu_pr"
+
+# If you wanna override them:
 # export BUPR_BRANCH="develop"
 # export BUPR_TITLE="My bundle update"
 ```
 
+### Available options
 
-### Set configuration values in config file.
-
-```rb
-require 'bu_pr'
-
-# Setup
-BuPr.configure do |config|
-  config.token  = "xxx"              # Required
-  config.repo   = "mmyoji/bu_pr"     # Required
-
-  config.branch = "develop"          # Optional :: default is 'master'
-  config.title  = "My bundle update" # Optional :: default is like 'Bundle update 2016-11-13'
-end
-
-BuPr::Runner.call
-```
-
-### Rails
-
-```rb
-# config/initializers/bu_pr.rb
-
-BuPr.configure do |config|
-  config.token = "xxx"
-  config.repo  = "mmyoji/bu_pr"
-end
-```
-
-then run the command `rake bu_pr`
-
+* branch: base branch name for the pull-request. Default is `master`
+* repo: your github repository name
+* title: the pull-request title. Default is `Bundle update 2017-04-04`
+* token: your GitHub access token
 
 ## Contributing
 
