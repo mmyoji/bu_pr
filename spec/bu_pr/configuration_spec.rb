@@ -3,7 +3,8 @@ require "spec_helper"
 require_relative "./../../lib/bu_pr/configuration"
 
 describe BuPr::Configuration do
-  let(:config) { described_class.instance }
+  let(:opts)   { {} }
+  let(:config) { described_class.new(opts) }
 
   describe "attr_accessors" do
     subject { config }
@@ -17,16 +18,6 @@ describe BuPr::Configuration do
       is_expected.to respond_to(:token=)
       is_expected.to respond_to(:repo)
       is_expected.to respond_to(:repo=)
-
-      # DEPRECATED
-      is_expected.to respond_to(:access_token)
-      is_expected.to respond_to(:access_token=)
-      is_expected.to respond_to(:base_branch)
-      is_expected.to respond_to(:base_branch=)
-      is_expected.to respond_to(:pr_title)
-      is_expected.to respond_to(:pr_title=)
-      is_expected.to respond_to(:repo_name)
-      is_expected.to respond_to(:repo_name=)
     end
   end
 

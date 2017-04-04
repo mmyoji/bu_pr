@@ -4,14 +4,4 @@ require "bu_pr/configuration"
 require "bu_pr/git"
 require "bu_pr/handlers/github"
 require "bu_pr/runner"
-require "bu_pr/railtie" if defined?(Rails::Railtie)
-
-module BuPr
-  def configure
-    conf = Configuration.instance
-    yield conf
-
-    Runner.config = conf
-  end
-  module_function :configure
-end
+require "bu_pr/command"
