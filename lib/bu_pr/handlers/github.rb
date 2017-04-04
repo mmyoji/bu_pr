@@ -5,13 +5,25 @@ require "compare_linker"
 module BuPr
   module Handlers
     class Github
+      # @return [String] base branch name
       attr_reader :base
+
+      # @return [String]
       attr_reader :current_branch
+
+      # @return [String]
       attr_reader :repo
+
+      # @return [String]
       attr_reader :title
+
+      # @return [String]
       attr_reader :token
+
+      # @return [CompareLinker]
       attr_reader :linker
 
+      # @param attrs [Hash]
       def initialize attrs = {}
         config          = attrs[:config]
 
@@ -28,6 +40,7 @@ module BuPr
         diff_comment(number)
       end
 
+      # @return [Integer] pull-request ID
       def create_pull_request
         res = client.create_pull_request \
           repo,
@@ -45,16 +58,22 @@ module BuPr
 
       private
 
+      # @private
+      # @return [Octokit::Client]
       def client
         @client ||= ::Octokit::Client.new(
           access_token: token,
         )
       end
 
+      # @private
+      # @return [String]
       def comment_content
         "#{linker.make_compare_links.to_a.join("\n")}"
       end
 
+      # @private
+      # @return [CompareLinker]
       def load_linker pr_number
         ENV['OCTOKIT_ACCESS_TOKEN'] = token
 
