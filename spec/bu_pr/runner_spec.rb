@@ -12,7 +12,7 @@ describe BuPr::Runner do
   }
   let(:runner) { described_class.new(opts) }
 
-  describe "attr_reader" do
+  describe "attr_readers" do
     subject { runner }
 
     it do
@@ -27,7 +27,7 @@ describe BuPr::Runner do
     end
 
     context "w/o diff" do
-      it "exits" do
+      it "not execute anything" do
         expect(runner.git).to receive(:diff?) { false }
         expect(runner.git).to_not receive(:push)
 
@@ -42,7 +42,7 @@ describe BuPr::Runner do
         allow(runner.git).to receive(:current_branch) { 'bundle-update' }
       end
 
-      specify do
+      it "executes all tasks" do
         expect(runner.git).to receive(:diff?) { true }
         expect(runner.git).to receive(:push)
 
@@ -85,9 +85,9 @@ describe BuPr::Runner do
   end
 
   describe "#config" do
-    it "returns an instance of BuPr::Configuration" do
-      expect(runner.config).to be_a(BuPr::Configuration)
-    end
+    subject { runner.config }
+
+    it { is_expected.to be_a(BuPr::Configuration) }
   end
 
   describe "#valid" do
@@ -103,11 +103,9 @@ describe BuPr::Runner do
     end
 
     context "w/ git is not installed" do
-      before do
-        expect(runner.git).to receive(:installed?) { false }
-      end
-
       specify do
+        expect(runner.git).to receive(:installed?) { false }
+
         expect { subject }.to \
           raise_error(RuntimeError, "Git is not installed")
       end
