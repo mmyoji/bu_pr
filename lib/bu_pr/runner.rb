@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 module BuPr
   class Runner
     class << self
