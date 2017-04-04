@@ -1,33 +1,21 @@
 # frozen_string_literal: true
-require 'singleton'
-
 module BuPr
   class Configuration
-    include Singleton
-
-    attr_accessor(
-      :branch,
-      :title,
-      :token,
-      :repo,
+    ATTRS = %i(
+      branch
+      title
+      token
+      repo
     )
 
-    # DEPRECATED
-    alias access_token token
-    alias access_token= token=
-    alias base_branch branch
-    alias base_branch= branch=
-    alias pr_title title
-    alias pr_title= title=
-    alias repo_name repo
-    alias repo_name= repo=
+    attr_accessor(*ATTRS)
 
-    def initialize
-      @branch = ENV.fetch("BUPR_BRANCH") { "master" }
-      @title  = ENV.fetch("BUPR_TITLE")  { "Bundle update #{Time.now.strftime('%F')}" }
+    def initialize opts = {}
+      @branch = opts.fetch(:branch) { ENV.fetch("BUPR_BRANCH") { "master" } }
+      @title  = opts.fetch(:title)  { ENV.fetch("BUPR_TITLE")  { default_title } }
 
-      @token  = ENV["BUPR_TOKEN"]
-      @repo   = ENV["BUPR_REPO"]
+      @token  = opts.fetch(:token) { ENV["BUPR_TOKEN"] }
+      @repo   = opts.fetch(:repo)  { ENV["BUPR_REPO"] }
     end
 
     def valid?
@@ -36,20 +24,15 @@ module BuPr
 
     private
 
-    def token?
-      token && token != ""
+    ATTRS.each do |attr|
+      define_method "#{attr}?" do
+        v = public_send(attr)
+        !v.nil? && v != ""
+      end
     end
 
-    def branch?
-      branch && branch != ""
-    end
-
-    def title?
-      title && title != ""
-    end
-
-    def repo?
-      repo && repo != ""
+    def default_title
+      "Bundle update #{Time.now.strftime('%F')}"
     end
   end
 end
