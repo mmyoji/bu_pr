@@ -3,6 +3,7 @@ module BuPr
   class Git
     LOCKFILE = "Gemfile.lock"
 
+    # @return [String]
     def current_branch
       @current_branch ||=
         begin
@@ -15,10 +16,12 @@ module BuPr
         end
     end
 
+    # @return [Boolean]
     def diff?
       `git status`.include?(LOCKFILE)
     end
 
+    # @return [Boolean]
     def installed?
       system("git --help > /dev/null 2>&1")
     end
@@ -29,18 +32,22 @@ module BuPr
 
     private
 
+    # @private
     def add
       `git add #{LOCKFILE}`
     end
 
+    # @private
     def branches
       `git branch`.strip
     end
 
+    # @private
     def commit
       `git commit -m "bundle update"`
     end
 
+    # @private
     def _push
       `git push origin #{current_branch}`
     end
