@@ -3,22 +3,25 @@ require "spec_helper"
 require_relative "./../../lib/bu_pr/runner"
 
 describe BuPr::Runner do
-  let(:config_double) { double("config", valid?: true) }
-
-  let(:runner) { described_class.new }
+  let(:opts) {
+    {
+      token: "xxx",
+      repo:  "mmyoji/bu_pr",
+    }
+  }
+  let(:runner) { described_class.new(opts) }
 
   describe "attr_reader" do
     subject { runner }
 
     it do
       is_expected.to respond_to :git
+      is_expected.to respond_to :config
     end
   end
 
   describe "#call" do
     before do
-      allow(runner).to receive(:config) { config_double }
-
       expect(runner).to receive(:bundle_update) { true }
     end
 
@@ -56,7 +59,6 @@ describe BuPr::Runner do
 
   describe '#bundle_update' do
     before do
-      allow(runner).to receive(:config) { config_double }
       allow(runner).to receive(:valid?) { validity }
     end
 
@@ -91,6 +93,8 @@ describe BuPr::Runner do
     subject { runner.valid? }
 
     context "w/ invalid config" do
+      let(:opts) { {} }
+
       specify do
         expect { subject }.to \
           raise_error(RuntimeError, "Invalid configuration")
@@ -99,7 +103,6 @@ describe BuPr::Runner do
 
     context "w/ git is not installed" do
       before do
-        expect(runner).to receive(:config) { config_double }
         expect(runner.git).to receive(:installed?) { false }
       end
 
@@ -111,7 +114,6 @@ describe BuPr::Runner do
 
     context "w/ valid setuo" do
       before do
-        expect(runner).to receive(:config) { config_double }
         expect(runner.git).to receive(:installed?) { true }
       end
 
