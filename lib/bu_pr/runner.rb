@@ -28,8 +28,9 @@ module BuPr
 
       git.push
 
-      handler = Handlers::Github.new config: config, current_branch: git.current_branch
-      handler.call
+      Handlers::Github.call \
+        config:         config,
+        current_branch: git.current_branch
     end
 
     # @return [Boolean]
