@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module BuPr
   class Configuration
     ATTRS = %i(
@@ -8,10 +9,9 @@ module BuPr
       repo
     )
 
-    # @return [String]
-    attr_accessor(*ATTRS)
+    attr_accessor(*ATTRS) # @return [String]
 
-    # @param opts [Hash]
+    # @param  opts [Hash]
     # @option opts [String] :branch Base branch name
     # @option opts [String] :title pull-request title
     # @option opts [String] :token GitHub access token
@@ -33,8 +33,9 @@ module BuPr
 
     ATTRS.each do |attr|
       # @private
+      # @return [Boolean]
       define_method "#{attr}?" do
-        v = public_send(attr)
+        v = public_send attr
         !v.nil? && v != ""
       end
     end
