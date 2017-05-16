@@ -6,23 +6,12 @@ require "compare_linker"
 module BuPr
   module Handlers
     class Github
-      # @return [String] base branch name
-      attr_reader :base
-
-      # @return [String]
-      attr_reader :current_branch
-
-      # @return [String]
-      attr_reader :repo
-
-      # @return [String]
-      attr_reader :title
-
-      # @return [String]
-      attr_reader :token
-
-      # @return [CompareLinker]
-      attr_reader :linker
+      attr_reader :base           # @return [String] base branch name
+      attr_reader :current_branch # @return [String]
+      attr_reader :repo           # @return [String]
+      attr_reader :title          # @return [String]
+      attr_reader :token          # @return [String]
+      attr_reader :linker         # @return [CompareLinker]
 
       # @param attrs [Hash]
       def initialize attrs = {}
@@ -52,6 +41,7 @@ module BuPr
         res[:number]
       end
 
+      # @param pr_number [Integer]
       def diff_comment pr_number
         load_linker(pr_number)
         linker.add_comment repo, pr_number, comment_content
