@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 module BuPr
+  # Custom errors
+  class RequirementUnfulfilled < StandardError; end
+  class InvalidConfigurations < StandardError; end
+
   class Runner
     class << self
       # @param opts [Hash]
@@ -39,17 +43,10 @@ module BuPr
     end
 
     # @return [Boolean]
-    # @raise RuntimeError
+    # @raise [BuPr::InvalidConfigurations]
+    # @raise [BuPr::RequirementUnfulfilled]
     def valid?
-      unless config.valid?
-        raise "Invalid configuration"
-      end
-
-      unless git.installed?
-        raise "Git is not installed"
-      end
-
-      true
+      check_config! && check_git!
     end
 
     private
@@ -61,6 +58,24 @@ module BuPr
       return true if system("bundle update")
 
       raise "Error(s) happened"
+    end
+
+    # @private
+    # @return [Boolean]
+    # @raise [BuPr::InvalidConfigurations]
+    def check_config!
+      return true if config.valid?
+
+      raise InvalidConfigurations, "Invalid configuration"
+    end
+
+    # @private
+    # @return [Boolean]
+    # @raise [BuPr::RequirementUnfulfilled]
+    def check_git!
+      return true if git.installed?
+
+      raise RequirementUnfulfilled, "Git is not installed"
     end
   end
 end
