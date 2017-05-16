@@ -10,15 +10,9 @@ module BuPr
       end
     end
 
-    # @private
-    # @return [BuPr::Git]
-    attr_reader :git
+    attr_reader :git    # @return [BuPr::Git]
+    attr_reader :config # @return [BuPr::Configuration]
 
-    # @private
-    # @return [BuPr::Configuration]
-    attr_reader :config
-
-    # @private
     # @param opts [Hash]
     # @see BuPr::Configuration#initialize
     def initialize opts = {}
@@ -26,7 +20,6 @@ module BuPr
       @config = Configuration.new(opts)
     end
 
-    # @private
     def call
       if bundle_update && !git.diff?
         puts "no update"
@@ -39,14 +32,13 @@ module BuPr
       handler.call
     end
 
-    # @private
     # @return [Boolean]
     def bundle_update
       valid? && _bundle_update
     end
 
-    # @private
     # @return [Boolean]
+    # @raise RuntimeError
     def valid?
       unless config.valid?
         raise "Invalid configuration"
