@@ -25,10 +25,24 @@ module BuPr
     end
 
     def call
+      # oldc = Comparator.new
+      # handler = ComparatorHandler.new(oldc)
+      # 1. Get current Gemfile
+      # 2. Run `bundle update`
+      # 3. Compare ex and current Gemfiles
+      # 4. Find diffs
+      # 5. Find `compare` links from GitHub
+      # 6. Create p-r with diff links
+
       if bundle_update && !git.diff?
         puts "no update"
         return
       end
+
+      # newc = Comparator.new
+      # handler.new_comparator = newc
+      # handler.compare!
+      # comparator.load_current!
 
       git.push
 
