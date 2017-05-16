@@ -13,11 +13,21 @@ module BuPr
       attr_reader :token   # @return [String]
       attr_reader :linker  # @return [CompareLinker]
 
-      # @param attrs [Hash]
-      def initialize attrs = {}
-        config = attrs[:config]
+      # Entry point
+      #
+      # @option [BuPr::Configuration] :config
+      # @option [String]              :current_branch
+      def self.call(config:, current_branch:)
+        new(
+          config:         config,
+          current_branch: current_branch
+        ).call
+      end
 
-        @current = attrs[:current_branch]
+      # @option [BuPr::Configuration] :config
+      # @option [String]              :current_branch
+      def initialize config:, current_branch:
+        @current = current_branch
         @base    = config.branch
         @repo    = config.repo
         @title   = config.title
