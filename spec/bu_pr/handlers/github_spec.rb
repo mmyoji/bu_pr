@@ -20,7 +20,7 @@ describe BuPr::Handlers::Github do
 
   describe "attr_reader" do
     specify do
-      expect(handler.current_branch).to eq "bundle-update"
+      expect(handler.current).to eq "bundle-update"
 
       expect(handler.base).to  eq config.branch
       expect(handler.repo).to  eq config.repo

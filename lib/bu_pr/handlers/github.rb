@@ -6,23 +6,22 @@ require "compare_linker"
 module BuPr
   module Handlers
     class Github
-      attr_reader :base           # @return [String] base branch name
-      attr_reader :current_branch # @return [String]
-      attr_reader :repo           # @return [String]
-      attr_reader :title          # @return [String]
-      attr_reader :token          # @return [String]
-      attr_reader :linker         # @return [CompareLinker]
+      attr_reader :base    # @return [String] base branch name
+      attr_reader :current # @return [String] current branch
+      attr_reader :repo    # @return [String]
+      attr_reader :title   # @return [String]
+      attr_reader :token   # @return [String]
+      attr_reader :linker  # @return [CompareLinker]
 
       # @param attrs [Hash]
       def initialize attrs = {}
-        config          = attrs[:config]
+        config = attrs[:config]
 
-        @current_branch = attrs[:current_branch]
-
-        @base  = config.branch
-        @repo  = config.repo
-        @title = config.title
-        @token = config.token
+        @current = attrs[:current_branch]
+        @base    = config.branch
+        @repo    = config.repo
+        @title   = config.title
+        @token   = config.token
       end
 
       def call
@@ -35,7 +34,7 @@ module BuPr
         res = client.create_pull_request \
           repo,
           base,
-          current_branch,
+          current,
           title
 
         res[:number]
