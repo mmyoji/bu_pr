@@ -17,7 +17,7 @@ module BuPr
       #
       # @option [BuPr::Configuration] :config
       # @option [String]              :current_branch
-      def self.call(config:, current_branch:)
+      def self.call config:, current_branch:
         new(
           config:         config,
           current_branch: current_branch
@@ -35,8 +35,7 @@ module BuPr
       end
 
       def call
-        number = create_pull_request
-        diff_comment(number)
+        diff_comment create_pull_request
       end
 
       # @return [Integer] pull-request ID
@@ -52,7 +51,7 @@ module BuPr
 
       # @param pr_number [Integer]
       def diff_comment pr_number
-        load_linker(pr_number)
+        load_linker pr_number
         linker.add_comment repo, pr_number, comment_content
       end
 
@@ -61,9 +60,7 @@ module BuPr
       # @private
       # @return [Octokit::Client]
       def client
-        @client ||= ::Octokit::Client.new(
-          access_token: token,
-        )
+        @client ||= ::Octokit::Client.new access_token: token
       end
 
       # @private

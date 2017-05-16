@@ -21,7 +21,7 @@ module BuPr
     # @see BuPr::Configuration#initialize
     def initialize opts = {}
       @git    = Git.new
-      @config = Configuration.new(opts)
+      @config = Configuration.new opts
     end
 
     def call

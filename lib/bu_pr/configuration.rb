@@ -35,7 +35,7 @@ module BuPr
       # @private
       # @return [Boolean]
       define_method "#{attr}?" do
-        v = public_send(attr)
+        v = public_send attr
         !v.nil? && v != ""
       end
     end
