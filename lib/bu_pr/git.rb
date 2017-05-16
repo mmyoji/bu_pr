@@ -19,12 +19,12 @@ module BuPr
 
     # @return [Boolean]
     def diff?
-      `git status`.include?(LOCKFILE)
+      `git status`.include? LOCKFILE
     end
 
     # @return [Boolean]
     def installed?
-      system("git --help > /dev/null 2>&1")
+      system "git --help > /dev/null 2>&1"
     end
 
     def push
