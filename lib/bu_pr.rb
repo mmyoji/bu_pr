@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "bu_pr/version"
 require "bu_pr/configuration"
 require "bu_pr/git"

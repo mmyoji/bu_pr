@@ -1,43 +1,41 @@
 # frozen_string_literal: true
+
 require "octokit"
 require "compare_linker"
 
 module BuPr
   module Handlers
     class Github
-      # @return [String] base branch name
-      attr_reader :base
+      attr_reader :base    # @return [String] base branch name
+      attr_reader :current # @return [String] current branch
+      attr_reader :repo    # @return [String]
+      attr_reader :title   # @return [String]
+      attr_reader :token   # @return [String]
+      attr_reader :linker  # @return [CompareLinker]
 
-      # @return [String]
-      attr_reader :current_branch
+      # Entry point
+      #
+      # @option [BuPr::Configuration] :config
+      # @option [String]              :current_branch
+      def self.call config:, current_branch:
+        new(
+          config:         config,
+          current_branch: current_branch
+        ).call
+      end
 
-      # @return [String]
-      attr_reader :repo
-
-      # @return [String]
-      attr_reader :title
-
-      # @return [String]
-      attr_reader :token
-
-      # @return [CompareLinker]
-      attr_reader :linker
-
-      # @param attrs [Hash]
-      def initialize attrs = {}
-        config          = attrs[:config]
-
-        @current_branch = attrs[:current_branch]
-
-        @base  = config.branch
-        @repo  = config.repo
-        @title = config.title
-        @token = config.token
+      # @option [BuPr::Configuration] :config
+      # @option [String]              :current_branch
+      def initialize config:, current_branch:
+        @current = current_branch
+        @base    = config.branch
+        @repo    = config.repo
+        @title   = config.title
+        @token   = config.token
       end
 
       def call
-        number = create_pull_request
-        diff_comment(number)
+        diff_comment create_pull_request
       end
 
       # @return [Integer] pull-request ID
@@ -45,14 +43,15 @@ module BuPr
         res = client.create_pull_request \
           repo,
           base,
-          current_branch,
+          current,
           title
 
         res[:number]
       end
 
+      # @param pr_number [Integer]
       def diff_comment pr_number
-        load_linker(pr_number)
+        load_linker pr_number
         linker.add_comment repo, pr_number, comment_content
       end
 
@@ -61,9 +60,7 @@ module BuPr
       # @private
       # @return [Octokit::Client]
       def client
-        @client ||= ::Octokit::Client.new(
-          access_token: token,
-        )
+        @client ||= ::Octokit::Client.new access_token: token
       end
 
       # @private

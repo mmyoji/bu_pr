@@ -1,5 +1,10 @@
 # frozen_string_literal: true
+
 module BuPr
+  # Custom errors
+  class RequirementUnfulfilled < StandardError; end
+  class InvalidConfigurations < StandardError; end
+
   class Runner
     class << self
       # @param opts [Hash]
@@ -9,23 +14,16 @@ module BuPr
       end
     end
 
-    # @private
-    # @return [BuPr::Git]
-    attr_reader :git
+    attr_reader :git    # @return [BuPr::Git]
+    attr_reader :config # @return [BuPr::Configuration]
 
-    # @private
-    # @return [BuPr::Configuration]
-    attr_reader :config
-
-    # @private
     # @param opts [Hash]
     # @see BuPr::Configuration#initialize
     def initialize opts = {}
       @git    = Git.new
-      @config = Configuration.new(opts)
+      @config = Configuration.new opts
     end
 
-    # @private
     def call
       if bundle_update && !git.diff?
         puts "no update"
@@ -34,28 +32,21 @@ module BuPr
 
       git.push
 
-      handler = Handlers::Github.new config: config, current_branch: git.current_branch
-      handler.call
+      Handlers::Github.call \
+        config:         config,
+        current_branch: git.current_branch
     end
 
-    # @private
     # @return [Boolean]
     def bundle_update
       valid? && _bundle_update
     end
 
-    # @private
     # @return [Boolean]
+    # @raise [BuPr::InvalidConfigurations]
+    # @raise [BuPr::RequirementUnfulfilled]
     def valid?
-      unless config.valid?
-        raise "Invalid configuration"
-      end
-
-      unless git.installed?
-        raise "Git is not installed"
-      end
-
-      true
+      check_config! && check_git!
     end
 
     private
@@ -67,6 +58,24 @@ module BuPr
       return true if system("bundle update")
 
       raise "Error(s) happened"
+    end
+
+    # @private
+    # @return [Boolean]
+    # @raise [BuPr::InvalidConfigurations]
+    def check_config!
+      return true if config.valid?
+
+      raise InvalidConfigurations, "Invalid configuration"
+    end
+
+    # @private
+    # @return [Boolean]
+    # @raise [BuPr::RequirementUnfulfilled]
+    def check_git!
+      return true if git.installed?
+
+      raise RequirementUnfulfilled, "Git is not installed"
     end
   end
 end

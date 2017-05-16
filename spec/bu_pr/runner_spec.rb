@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 require "spec_helper"
 
 require_relative "./../../lib/bu_pr/runner"
@@ -98,7 +99,7 @@ describe BuPr::Runner do
 
       specify do
         expect { subject }.to \
-          raise_error(RuntimeError, "Invalid configuration")
+          raise_error(BuPr::InvalidConfigurations, "Invalid configuration")
       end
     end
 
@@ -107,7 +108,7 @@ describe BuPr::Runner do
         expect(runner.git).to receive(:installed?) { false }
 
         expect { subject }.to \
-          raise_error(RuntimeError, "Git is not installed")
+          raise_error(BuPr::RequirementUnfulfilled, "Git is not installed")
       end
     end
 
