@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.name          = "bu_pr"
   spec.version       = BuPr::VERSION
   spec.authors       = ["Masaya Myojin"]
-  spec.email         = ["m.myojin0425@gmail.com"]
+  spec.email         = ["mmyoji@gmail.com"]
 
   spec.summary       = %q{Simple bundle update p-r creator}
   spec.description   = %q{BuPr is simple pull request creator for the daily bundle update.}
